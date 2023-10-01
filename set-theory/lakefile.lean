@@ -1,15 +1,14 @@
 import Lake
 open Lake DSL
 
-package setTheory {
-  -- add package configuration options here
+package «set-theory» {
+  -- add any package configuration options here
 }
 
-lean_lib SetTheory {
-  -- add library configuration options here
-}
+require mathlib from git
+  "https://github.com/leanprover-community/mathlib4.git"
 
 @[defaultTarget]
-lean_exe setThoery {
-  root := `Main
+lean_lib SetTheory {
+  -- add any library configuration options here
 }
