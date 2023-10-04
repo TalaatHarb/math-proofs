@@ -4,4 +4,5 @@
 **/build
 **/lean_packages/*
 !/lean_packages/manifest.json
-set-theory/lakefile.olean
+**/lakefile.olean
+natural-number-game/lakefile.olean
