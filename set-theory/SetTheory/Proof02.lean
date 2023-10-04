@@ -4,8 +4,13 @@ theorem set_inter_union_is_subset (A B: Set α ) : A ∩ (A ∪ B) ⊆ A := by
   intro x h
   exact h.left
 
+theorem elem_in_set_is_in_union (A B: Set α ) (h: x ∈ A) : x ∈ (A ∪ B) := by
+  apply Or.inl
+  exact h
+
 theorem inter_union_is_subset (A B: Set α ) : A ⊆ A ∩ (A ∪ B) := by
   intro x h
+  
   sorry
 
 

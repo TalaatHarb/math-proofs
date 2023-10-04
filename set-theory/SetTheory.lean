@@ -21,3 +21,6 @@ infix:70 " ∩ " => inter
 infixl:65 " ∪ " => union
 infix:50 " ⊆ " => subset
 
+theorem subset_iff_is_equal (A B: Set α ) (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
+  
+  sorry
