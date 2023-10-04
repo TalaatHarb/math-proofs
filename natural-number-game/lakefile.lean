@@ -8,8 +8,3 @@ package myNat {
 lean_lib MyNat {
   -- add library configuration options here
 }
-
-@[defaultTarget]
-lean_exe myNat {
-  root := `Main
-}

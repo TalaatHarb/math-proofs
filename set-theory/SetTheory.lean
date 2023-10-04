@@ -1,7 +1,23 @@
-variable {α : Type}
-variable (S T : Set α)
-variable (x: α)
+def Set (α : Type u) := α → Prop
 
-#check x ∈ S
-#check x ∉ T
+def mem (x : α) (a : Set α) := a x
+
+infix:50 (priority := high) " ∈ " => mem
+
+def empty : Set α := fun _ => False
+
+notation (priority := high) " ∅ " => empty
+
+def inter (A B : Set α) : Set α :=
+  fun x => x ∈ A ∧ x ∈ B
+
+def union (A B : Set α) : Set α :=
+  fun x => x ∈ A ∨ x ∈ B
+
+def subset (A B : Set α) : Prop :=
+  ∀ {x}, x ∈ A → x ∈ B
+
+infix:70 " ∩ " => inter
+infixl:65 " ∪ " => union
+infix:50 " ⊆ " => subset
 
