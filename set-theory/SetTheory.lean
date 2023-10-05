@@ -1,4 +1,5 @@
-def Set (α : Type u) := α → Prop
+namespace Set
+def Set (α : Type _) := α → Prop
 
 def mem (x : α) (a : Set α) := a x
 
@@ -21,6 +22,17 @@ infix:70 " ∩ " => inter
 infixl:65 " ∪ " => union
 infix:50 " ⊆ " => subset
 
+axiom ext (α : Type _) (A B : Set α) : (∀ x, x ∈ A ↔ x ∈ B) → A = B
+
+end Set
+
+open Set
+
 theorem subset_iff_is_equal (A B: Set α ) (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
-  
-  sorry
+  apply ext 
+  rw [subset] at h1
+  rw [subset] at h2
+  intro x
+  apply Iff.intro
+  apply h1
+  apply h2

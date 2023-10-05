@@ -1,4 +1,5 @@
 import SetTheory
+open Set
 
 theorem inter_element_part_of_left_set (A B: Set α) (h: x ∈ A ∩ B) : x ∈ A := by
   exact h.left
