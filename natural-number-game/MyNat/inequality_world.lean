@@ -1,12 +1,13 @@
+import MyNat
+import MyNat.lemma
 import MyNat.le
 import MyNat.addition_world
 import MyNat.advanced_addition_world
-import MyNat.advanced_proposition_world
 
 open MyNat
 
 lemma one_add_le_self (x : ℕ) : x ≤ 1 + x := by
-  rewrite [add_comm]
+  rw [add_comm]
   exists 1
 
 lemma le_refl (x : ℕ) : x ≤ x := by
@@ -14,46 +15,41 @@ lemma le_refl (x : ℕ) : x ≤ x := by
 
 theorem le_succ (a b : ℕ) : a ≤ b → a ≤ succ b := by
   intro h
-  rewrite [le_iff_exists_add] at h ⊢ 
+  rw [le_iff_exists_add] at h ⊢
   cases h with
-  | intro c h' => 
+  | intro c h' =>
     exists (succ c)
-    rewrite [add_succ, h']
-    rfl
+    rw [add_succ, h']
 
 lemma zero_le (a : ℕ) : 0 ≤ a := by
   induction a with
   | zero => exact le_refl zero
-  | succ a' ih => 
+  | succ a' ih =>
   apply le_succ
   exact ih
 
-theorem le_trans (a b c : ℕ) 
-  (hab : a ≤ b) (hbc : b ≤ c) : a ≤ c := by 
+theorem le_trans (a b c : ℕ)
+  (hab : a ≤ b) (hbc : b ≤ c) : a ≤ c := by
   cases hab with
-  | intro h hab' => 
+  | intro h hab' =>
   cases hbc with
-  | intro f hbc' => 
-  rewrite [hab', add_assoc] at hbc'
-  rewrite [le_iff_exists_add a c]
+  | intro f hbc' =>
+  rw [hab', add_assoc] at hbc'
+  rw [le_iff_exists_add a c]
   exists (h + f)
-    
+
 theorem le_antisem (a b : ℕ)
   (hab : a ≤ b) (hba : b ≤ a) : a = b := by
   cases hab with
-  | intro c hbac => 
+  | intro c1 hab =>
   cases hba with
-  | intro d habd => 
-  induction c with
-  | zero => 
-  rewrite [add_zero] at hbac
-  rewrite [hbac]
-  rfl
-  | succ c' ih => sorry
-  
+  | intro c2 hba =>
+  rw [hab, add_assoc] at hba
+  have hc := eq_zero_of_add_right_eq_self a (c1+c2) (Eq.symm hba)
+  have hc1 := add_right_eq_zero c1 c2 hc
+  rw [hc1, add_zero a] at hab
+  rw [hab]
 
-  
-  
 theorem le_zero (a : ℕ) (h : a ≤ 0) : a = 0 := by
   sorry
 
@@ -63,17 +59,17 @@ theorem le_total (a b : ℕ) : a ≤ b ∨ b ≤ a := by
 lemma le_succ_self (a : ℕ) : a ≤ succ a := by
   sorry
 
-theorem add_le_add_right (a b : ℕ) : 
+theorem add_le_add_right (a b : ℕ) :
   a ≤ b → ∀ t, (a + t) ≤ (b + t) := by
   sorry
 
-theorem le_of_succ_le_succ (a b : ℕ) : 
+theorem le_of_succ_le_succ (a b : ℕ) : a ≤ 0 := by
   sorry
 
 theorem not_succ_le_self (a : ℕ) : ¬ (succ a ≤ a) := by
   sorry
 
-theorem add_le_add_left (a b t : ℕ) 
+theorem add_le_add_left (a b t : ℕ)
   (h : a ≤ b) : t + a ≤ t + b := by
   sorry
 
@@ -82,11 +78,11 @@ theorem add_le_add_left (a b t : ℕ)
 -- a < b := a ≤ b ∧ ¬ (b ≤ a)
 -- a < b := succ(a) ≤ b
 
-lemma lt_aux_one (a b : ℕ) : 
+lemma lt_aux_one (a b : ℕ) :
   a ≤ b ∧ ¬ (b ≤ a) → succ a ≤ b := by
   sorry
 
-lemma lt_aux_two (a b : ℕ) : 
+lemma lt_aux_two (a b : ℕ) :
   succ a ≤ b → a ≤ b ∧ ¬ (b ≤ a) := by
   sorry
 
