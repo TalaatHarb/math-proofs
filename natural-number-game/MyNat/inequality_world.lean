@@ -48,22 +48,30 @@ theorem le_antisem (a b : ℕ)
   have hc := eq_zero_of_add_right_eq_self a (c1+c2) (Eq.symm hba)
   have hc1 := add_right_eq_zero c1 c2 hc
   rw [hc1, add_zero a] at hab
-  rw [hab]
+  exact Eq.symm hab
 
 theorem le_zero (a : ℕ) (h : a ≤ 0) : a = 0 := by
-  sorry
+  cases h with
+  | intro c hac =>
+  have hc := add_right_eq_zero a c (Eq.symm hac)
+  exact hc
 
 theorem le_total (a b : ℕ) : a ≤ b ∨ b ≤ a := by
   sorry
 
 lemma le_succ_self (a : ℕ) : a ≤ succ a := by
-  sorry
+  rw [le_iff_exists_add, succ_eq_add_one]
+  exists 1
 
 theorem add_le_add_right (a b : ℕ) :
   a ≤ b → ∀ t, (a + t) ≤ (b + t) := by
-  sorry
+  intro h t
+  cases h with
+  | intro c hc =>
+  exists c
+  rw[hc, add_right_comm]
 
-theorem le_of_succ_le_succ (a b : ℕ) : a ≤ 0 := by
+theorem le_of_succ_le_succ (a b : ℕ) :
   sorry
 
 theorem not_succ_le_self (a : ℕ) : ¬ (succ a ≤ a) := by
@@ -72,11 +80,6 @@ theorem not_succ_le_self (a : ℕ) : ¬ (succ a ≤ a) := by
 theorem add_le_add_left (a b t : ℕ)
   (h : a ≤ b) : t + a ≤ t + b := by
   sorry
-
-#check LE.le
-
--- a < b := a ≤ b ∧ ¬ (b ≤ a)
--- a < b := succ(a) ≤ b
 
 lemma lt_aux_one (a b : ℕ) :
   a ≤ b ∧ ¬ (b ≤ a) → succ a ≤ b := by
