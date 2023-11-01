@@ -5,7 +5,7 @@ import MyNat.advanced_proposition_world
 
 open MyNat
 
-theorem mul_pos (a b : ℕ) :
+theorem mul_pos (a b : MyNat) :
   a ≠ zero → b ≠ zero → a * b ≠ zero := by
   intro ha hb
   induction a with
@@ -18,7 +18,7 @@ theorem mul_pos (a b : ℕ) :
       rw [succ_mul, add_succ]
       apply succ_ne_zero
 
-theorem eq_zero_or_eq_zero_of_mul_eq_zero (a b : ℕ)
+theorem eq_zero_or_eq_zero_of_mul_eq_zero (a b : MyNat)
   (h : a * b = 0) : a = 0 ∨ b = 0 := by
   induction a with
   | zero =>
@@ -35,7 +35,7 @@ theorem eq_zero_or_eq_zero_of_mul_eq_zero (a b : ℕ)
       contradiction
 
 
-theorem mul_eq_zero_iff (a b : ℕ) :
+theorem mul_eq_zero_iff (a b : MyNat) :
   a * b = 0 ↔ a = 0 ∨ b = 0 := by
   constructor
   {
@@ -54,7 +54,7 @@ theorem mul_eq_zero_iff (a b : ℕ) :
     )
   }
 
-theorem mul_left_cancel (a b c : ℕ)
+theorem mul_left_cancel (a b c : MyNat)
   (ha : a ≠ 0) : a * b = a * c → b = c := by
   intro habc
   induction c generalizing b with

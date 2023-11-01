@@ -1,16 +1,16 @@
 import MyNat
 open MyNat
 
-def le(a b: ℕ ) := ∃ (c: ℕ ), b = a + c
+def le(a b: MyNat ) := ∃ (c: MyNat ), b = a + c
 
-instance : LE ℕ where
+instance : LE MyNat where
   le := le
 
-theorem le_iff_exists_add (a b : ℕ) :
-  a ≤ b ↔ ∃ (c : ℕ), b = a + c :=
+theorem le_iff_exists_add (a b : MyNat) :
+  a ≤ b ↔ ∃ (c : MyNat), b = a + c :=
   Iff.rfl
 
 def lt (a b : ℕ) := a ≤ b ∧ ¬ (b ≤ a)
 
-instance : LT ℕ where
+instance : LT MyNat where
   lt := lt
