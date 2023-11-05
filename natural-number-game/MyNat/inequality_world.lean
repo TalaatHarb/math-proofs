@@ -59,25 +59,25 @@ theorem le_zero (a : MyNat) (h : a ≤ 0) : a = 0 := by
 
 theorem le_total (a b : MyNat) : a ≤ b ∨ b ≤ a := by
   induction b with
-  | zero => exact (Or.inr (zero_le a))
+  | zero => exact Or.inr (zero_le a)
   | succ b ih =>
   exact (
     Or.elim
     ih
     (fun a_le_b => Or.inl (le_succ _ _ a_le_b))
     (fun b_le_a => by
-      rewrite [le_iff_exists_add] at b_le_a
+      rw [le_iff_exists_add] at b_le_a
       cases b_le_a with
       | intro c h =>
         cases c with
         | zero =>
-          rewrite [add_zero] at h
-          rewrite [h, succ_eq_add_one, add_comm]
+          rw [add_zero] at h
+          rw [h, succ_eq_add_one, add_comm]
           exact (Or.inl (one_add_le_self b))
         | succ c =>
           apply Or.inr
           exists c
-          rewrite [add_succ, add_comm, ←add_succ, ←add_comm] at h
+          rw [add_succ, add_comm, ←add_succ, ←add_comm] at h
           trivial
     )
   )
