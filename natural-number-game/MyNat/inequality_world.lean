@@ -57,23 +57,43 @@ theorem le_zero (a : MyNat) (h : a ≤ 0) : a = 0 := by
   have hc := add_right_eq_zero a c (Eq.symm hac)
   exact hc
 
+theorem le_total (a b : MyNat) : a ≤ b ∨ b ≤ a := by
+  induction b with
+  | zero => exact (Or.inr (zero_le a))
+  | succ b ih =>
+  exact (
+    Or.elim
+    ih
+    (fun a_le_b => Or.inl (le_succ _ _ a_le_b))
+    (fun b_le_a => by
+      rewrite [le_iff_exists_add] at b_le_a
+      cases b_le_a with
+      | intro c h =>
+        cases c with
+        | zero =>
+          rewrite [add_zero] at h
+          rewrite [h, succ_eq_add_one, add_comm]
+          exact (Or.inl (one_add_le_self b))
+        | succ c =>
+          apply Or.inr
+          exists c
+          rewrite [add_succ, add_comm, ←add_succ, ←add_comm] at h
+          trivial
+    )
+  )
+
 theorem not_le_reverse_lt (a b: MyNat) (h: ¬a ≤ b) : b < a := by
   by_cases hba : b ≤ a
   . exact And.intro hba h
-  .
-
-    sorry
+  . have hand := not_and_not _ _ (And.intro h hba)
+    have ht:= le_total a b
+    contradiction
 
 theorem not_le_reverse (a b: MyNat) (h: ¬a ≤ b) : b ≤ a := by
   have hba := not_le_reverse_lt a b h
   cases hba with
   | intro hbaf _ =>
   exact hbaf
-
-theorem le_total (a b : MyNat) : a ≤ b ∨ b ≤ a := by
-  by_cases h : a ≤ b
-  exact Or.inl h
-  exact Or.inr (not_le_reverse a b h)
 
 lemma le_succ_self (a : MyNat) : a ≤ succ a := by
   rw [le_iff_exists_add, succ_eq_add_one]
