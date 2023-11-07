@@ -37,7 +37,7 @@ lemma succ_mul (a b: MyNat): succ (a) * b = a * b + b :=
   by induction b with
   | zero => rfl
   | succ b' ih =>
-  rw [mul_succ, mul_succ, ih, succ_eq_add_one, succ_eq_add_one,
+    rw [mul_succ, mul_succ, ih, succ_eq_add_one, succ_eq_add_one,
    <- add_assoc, <- add_assoc, add_right_comm a, add_right_comm]
 
 lemma add_mul(t a b: MyNat) : (a + b) * t = a * t + b * t :=

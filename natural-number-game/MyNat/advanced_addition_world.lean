@@ -23,8 +23,8 @@ lemma succ_eq_succ_of_eq (a b : MyNat ) : a = b → succ a = succ b := by
 
 lemma succ_eq_succ_iff (a b : MyNat ): a = b ↔ succ a = succ b := by
   constructor
-  apply succ_eq_succ_of_eq
-  apply succ_inj
+  . apply succ_eq_succ_of_eq
+  . apply succ_inj
 
 theorem add_right_cancel (a b t: MyNat ): a + t = b + t → a = b := by
   intro hatb
@@ -43,9 +43,9 @@ theorem add_left_cancel (a b t: MyNat ): t + a = t + b → a = b := by
 
 theorem add_right_cancel_iff (a b t: MyNat ): a + t = b + t ↔ a = b := by
   constructor
-  apply add_right_cancel
-  intro hab
-  rw [hab]
+  . apply add_right_cancel
+  . intro hab
+    rw [hab]
 
 lemma eq_zero_of_add_right_eq_self (a b : MyNat) :
   a + b = a → b = 0 := by

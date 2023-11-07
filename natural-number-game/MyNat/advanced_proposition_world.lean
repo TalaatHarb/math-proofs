@@ -5,16 +5,16 @@ open MyNat
 
 lemma and_prop(P Q : Prop) (p : P) (q : Q) : P ∧ Q := by
   constructor
-  exact p
-  exact q
+  . exact p
+  . exact q
 
 lemma and_symm (P Q : Prop) : P ∧ Q → Q ∧ P := by
   intro hpq
   cases hpq with
   | intro hp hq =>
     constructor
-    exact hq
-    exact hp
+    . exact hq
+    . exact hp
 
 lemma and_trans (P Q R : Prop) : P ∧ Q → Q ∧ R → P ∧ R := by
   intro hpq hqr
@@ -23,8 +23,8 @@ lemma and_trans (P Q R : Prop) : P ∧ Q → Q ∧ R → P ∧ R := by
     cases hqr with
     | intro hq hr =>
       constructor
-      exact hp
-      exact hr
+      . exact hp
+      . exact hr
 
 lemma iff_trans (P Q R : Prop) : (P ↔ Q) → (Q ↔ R) → (P ↔ R) := by
   intro hpq2 hqr2
@@ -33,21 +33,21 @@ lemma iff_trans (P Q R : Prop) : (P ↔ Q) → (Q ↔ R) → (P ↔ R) := by
   cases hqr2 with
   | intro hqr hrq =>
     constructor
-    intro hp
-    exact hqr (hpq hp)
-    intro hr
-    exact hqp (hrq hr)
+    . intro hp
+      exact hqr (hpq hp)
+    . intro hr
+      exact hqp (hrq hr)
 
 example (P Q R : Prop) : (P ↔ Q) → (Q ↔ R) → (P ↔ R) := by
   intro hpq2 hqr2
   constructor
-  intro hp
-  apply Iff.mp hqr2
-  apply Iff.mp hpq2
-  exact hp
-  intro hr
-  rewrite [hpq2, hqr2]
-  exact hr
+  . intro hp
+    apply Iff.mp hqr2
+    apply Iff.mp hpq2
+    exact hp
+  . intro hr
+    rewrite [hpq2, hqr2]
+    exact hr
 
 
 example (P Q : Prop) : Q → (P ∨ Q) := by
@@ -89,8 +89,8 @@ lemma and_or_common_factor (P Q R : Prop) :
 lemma and_or_distrib_left_iff (P Q R : Prop) :
   P ∧ (Q ∨ R) ↔ (P ∧ Q) ∨ (P ∧ R) := by
   constructor
-  apply and_or_distrib_left
-  apply and_or_common_factor
+  . apply and_or_distrib_left
+  . apply and_or_common_factor
 
 lemma contra (P Q : Prop) : (P ∧ ¬ P) → Q := by
   intro hpAnp
@@ -107,8 +107,8 @@ lemma contrapositive2 (P Q : Prop) : (¬ Q → ¬ P) → (P → Q) := by
 
 lemma full_contrapositive (P Q : Prop) : (¬ Q → ¬ P) ↔ (P → Q) := by
   constructor
-  apply contrapositive2
-  apply contrapositive
+  . apply contrapositive2
+  . apply contrapositive
 
 lemma not_and (P Q : Prop) : ¬(P ∧ Q) → (¬P) ∨ (¬Q) := by
   intro h
