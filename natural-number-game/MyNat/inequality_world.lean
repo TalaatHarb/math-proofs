@@ -59,28 +59,24 @@ theorem le_zero (a : MyNat) (h : a ≤ 0) : a = 0 := by
 
 theorem le_total (a b : MyNat) : a ≤ b ∨ b ≤ a := by
   induction b with
-  | zero => exact Or.inr (zero_le a)
+  | zero =>
+  exact Or.inr (zero_le a)
   | succ b ih =>
-  exact (
-    Or.elim
-    ih
-    (fun a_le_b => Or.inl (le_succ _ _ a_le_b))
-    (fun b_le_a => by
-      rw [le_iff_exists_add] at b_le_a
-      cases b_le_a with
-      | intro c h =>
-        cases c with
-        | zero =>
-          rw [add_zero] at h
-          rw [h, succ_eq_add_one, add_comm]
-          exact (Or.inl (one_add_le_self b))
-        | succ c =>
-          apply Or.inr
-          exists c
-          rw [add_succ, add_comm, ←add_succ, ←add_comm] at h
-          trivial
-    )
-  )
+  match ih with
+  | Or.inl ih =>
+  exact Or.inl (le_succ a b ih)
+  | Or.inr ih =>
+  cases ih with
+  | intro c h =>
+  cases c with
+  | zero =>
+  rw [add_zero] at h
+  rw [h, succ_eq_add_one, add_comm]
+  exact Or.inl (one_add_le_self b)
+  | succ d =>
+  rw [succ_eq_add_one, add_comm d 1, <- add_assoc, <- succ_eq_add_one] at h
+  apply Or.inr
+  exists d
 
 theorem not_le_reverse_lt (a b: MyNat) (h: ¬a ≤ b) : b < a := by
   by_cases hba : b ≤ a
