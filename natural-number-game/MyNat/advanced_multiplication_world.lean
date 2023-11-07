@@ -19,7 +19,7 @@ theorem mul_pos (a b : MyNat) :
       apply succ_ne_zero
 
 theorem eq_zero_or_eq_zero_of_mul_eq_zero (a b : MyNat)
-  (h : a * b = 0) : a = 0 ∨ b = 0 := by
+  (h : a * b = zero) : a = zero ∨ b = zero := by
   induction a with
   | zero =>
     apply Or.inl
@@ -55,29 +55,24 @@ theorem mul_eq_zero_iff (a b : MyNat) :
   }
 
 theorem mul_left_cancel (a b c : MyNat)
-  (ha : a ≠ 0) : a * b = a * c → b = c := by
-  intro habc
+  (ha : a ≠ zero) : a * b = a * c → b = c := by
+  intro h
   induction c generalizing b with
-  | zero =>
-    rw [mul_zero] at habc
-    let h := eq_zero_or_eq_zero_of_mul_eq_zero _ _ habc
-    exact(
-      Or.elim h
-      (fun a0 => False.elim (ha a0))
-      id
-    )
-  | succ c' ih =>
-    induction b with
     | zero =>
-      rw [mul_zero] at habc
-      let h := eq_zero_or_eq_zero_of_mul_eq_zero _ _ habc.symm
-      exact(
-        Or.elim h
-        (fun a0 => False.elim (ha a0))
-        (fun c0 => False.elim (succ_ne_zero _ c0))
-      )
-    | succ b' _ =>
-      rw [mul_succ, mul_succ] at habc
-      let h := add_left_cancel _ _ _ habc
-      let h' := (ih b') h
-      rw [h']
+    rw [mul_zero] at h
+    have hz:= eq_zero_or_eq_zero_of_mul_eq_zero a b h
+    match hz with
+      | Or.inl hz => contradiction
+      | Or.inr hz => assumption
+    | succ c ih =>
+      cases b with
+      | zero =>
+      rw [mul_zero] at h
+      have hz:= eq_zero_or_eq_zero_of_mul_eq_zero  a (succ c) (Eq.symm h)
+      match hz with
+        | Or.inl hz => contradiction
+        | Or.inr hz => exact Eq.symm hz
+      | succ b =>
+        rw [mul_succ, mul_succ] at h
+        have hf := ih b (add_left_cancel (a*b) (a*c) a h)
+        rw [hf]
