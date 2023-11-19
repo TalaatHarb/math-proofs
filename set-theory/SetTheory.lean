@@ -1,5 +1,6 @@
 namespace Set
-def Set (α : Type _) := α → Prop
+universe u
+def Set (α : Type u) := α → Prop
 
 def mem (x : α) (a : Set α) := a x
 
@@ -18,6 +19,9 @@ def union (A B : Set α) : Set α :=
 def subset (A B : Set α) : Prop :=
   ∀ {x}, x ∈ A → x ∈ B
 
+def complement(A: Set α) : Set α :=
+  fun x => ¬ (x ∈ A)
+
 infix:70 " ∩ " => inter
 infixl:65 " ∪ " => union
 infix:50 " ⊆ " => subset
@@ -28,11 +32,16 @@ end Set
 
 open Set
 
-theorem subset_iff_is_equal (A B: Set α ) (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
-  apply ext 
+theorem subset_iff_is_equal {A B: Set α } (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
+  apply ext
   rw [subset] at h1
   rw [subset] at h2
   intro x
   apply Iff.intro
   apply h1
   apply h2
+
+theorem element_member_int_not_empty {A B: Set α } {x: α} (h: x ∈ A ∩ B): A ∩ B ≠ ∅ := by
+  intro hc
+  rw [hc] at h
+  contradiction
