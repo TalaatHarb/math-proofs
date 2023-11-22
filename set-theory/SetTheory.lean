@@ -1,5 +1,5 @@
 namespace Set
-universe u v
+universe u
 def Set (α : Type u) := α → Prop
 
 def mem (x : α) (a : Set α) := a x
@@ -34,7 +34,7 @@ infix:50 " ⊆ " => subset
 postfix:100 "ᶜ " => complement
 infix:75 " - " => difference
 infix:80 " \\ " => difference
-infix:85 " × " => cross
+infix:30 (priority := high) " × " => cross
 
 axiom ext (α : Type _) (A B : Set α) : (∀ x, x ∈ A ↔ x ∈ B) → A = B
 

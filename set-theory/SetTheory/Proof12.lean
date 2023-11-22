@@ -1,7 +1,7 @@
 import SetTheory
 open Set
 
-theorem cross_distribute_inter (A B C: Set α ) : cross A (B ∩ C) = (A × B) ∩ (A × C):= by
+theorem cross_distribute_inter (A B C: Set α ) : (A × (B ∩ C)) = (A × B) ∩ (A × C):= by
   apply Set.ext
   intro p
   constructor
