@@ -32,8 +32,8 @@ infix:70 " ∩ " => inter
 infixl:65 " ∪ " => union
 infix:50 " ⊆ " => subset
 postfix:100 "ᶜ " => complement
-infix:75 " \\ " => difference
-infix:80 " - " => difference
+infix:75 " - " => difference
+infix:80 " \\ " => difference
 infix:85 " × " => cross
 
 axiom ext (α : Type _) (A B : Set α) : (∀ x, x ∈ A ↔ x ∈ B) → A = B
@@ -73,3 +73,29 @@ theorem element_member_int_not_empty {A B: Set α } {x: α} (h: x ∈ A ∩ B): 
   intro hc
   rw [hc] at h
   contradiction
+
+theorem member_set_or_complement (A : Set α ) (x: α) : x ∈ A ∨ x ∈ Aᶜ := by
+  by_cases h: x ∈ A
+  . exact Or.inl h
+  . exact Or.inr h
+
+theorem not_set_iff_complement (A: Set α) (x: α ) : ¬ x ∈ A ↔ x ∈ Aᶜ:= by
+  constructor
+  . intro hna
+    exact hna
+  . intro hac
+    exact hac
+
+theorem complement_complement_set(A: Set α ) : (Aᶜ)ᶜ = A := by
+  apply Set.ext
+  intro x
+  constructor
+  . intro hacc
+    by_cases ha: x ∈ A
+    . exact ha
+    . have hc: x ∈ Aᶜ := by exact ha
+      contradiction
+  . intro ha
+    by_cases hc: x ∈ Aᶜ
+    . contradiction
+    . exact hc
