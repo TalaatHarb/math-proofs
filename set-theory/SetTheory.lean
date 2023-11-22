@@ -22,9 +22,15 @@ def subset (A B : Set α) : Prop :=
 def complement(A: Set α) : Set α :=
   fun x => ¬ (x ∈ A)
 
+def difference(A B: Set α ): Set α :=
+  fun x => x ∈ A ∧ (¬ x ∈ B)
+
 infix:70 " ∩ " => inter
 infixl:65 " ∪ " => union
 infix:50 " ⊆ " => subset
+postfix:100 "ᶜ " => complement
+infix:75 " \\ " => difference
+infix:80 " - " => difference
 
 axiom ext (α : Type _) (A B : Set α) : (∀ x, x ∈ A ↔ x ∈ B) → A = B
 
@@ -32,7 +38,7 @@ end Set
 
 open Set
 
-theorem subset_iff_is_equal {A B: Set α } (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
+theorem double_inclusion {A B: Set α } (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
   apply ext
   rw [subset] at h1
   rw [subset] at h2

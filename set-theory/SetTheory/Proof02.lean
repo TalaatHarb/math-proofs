@@ -16,6 +16,6 @@ theorem inter_union_is_subset (A B: Set α ) : A ⊆ A ∩ (A ∪ B) := by
   exact elem_in_set_is_in_union A B h
 
 theorem set_inter_union_is_same (A B: Set α ) : A ∩ (A ∪ B) = A := by
-  apply subset_iff_is_equal
+  apply double_inclusion
   apply set_inter_union_is_subset
   apply inter_union_is_subset
