@@ -38,14 +38,32 @@ end Set
 
 open Set
 
-theorem double_inclusion {A B: Set α } (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
-  apply ext
-  rw [subset] at h1
-  rw [subset] at h2
-  intro x
-  apply Iff.intro
-  apply h1
-  apply h2
+theorem double_inclusion {A B: Set α } : A ⊆ B ∧ B ⊆ A ↔ A = B := by
+  constructor
+  . intro h
+    have h1 : A ⊆ B := by exact h.left
+    have h2 : B ⊆ A := by exact h.right
+    apply ext
+    rw [subset] at h1
+    rw [subset] at h2
+    intro x
+    apply Iff.intro
+    apply h1
+    apply h2
+  . intro h
+    constructor
+    . intro x ha
+      have hb: x ∈ B := by rw [h] at ha; assumption
+      exact hb
+    . intro x hb
+      have ha: x ∈ A := by rw [h.symm] at hb; assumption
+      exact ha
+
+theorem double_inclusion_left {A B: Set α } (h1: A ⊆ B) (h2: B ⊆ A) : A = B := by
+  exact double_inclusion.mp (And.intro h1 h2)
+
+theorem double_inclusion_right {A B: Set α } (h: A = B) : A ⊆ B ∧ B ⊆ A := by
+  exact double_inclusion.mpr h
 
 theorem element_member_int_not_empty {A B: Set α } {x: α} (h: x ∈ A ∩ B): A ∩ B ≠ ∅ := by
   intro hc

@@ -2,7 +2,7 @@ import SetTheory
 open Set
 
 theorem union_inter_complement_is_diff (A B: Set α ) : (A ∪ B) ∩ Aᶜ = B \ A := by
-  apply double_inclusion
+  apply double_inclusion_left
   . intro x h
     constructor
     . have hu: x ∈ A ∪ B := by exact h.left
