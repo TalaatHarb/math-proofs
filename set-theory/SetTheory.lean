@@ -1,5 +1,5 @@
 namespace Set
-universe u
+universe u v
 def Set (α : Type u) := α → Prop
 
 def mem (x : α) (a : Set α) := a x
@@ -19,11 +19,14 @@ def union (A B : Set α) : Set α :=
 def subset (A B : Set α) : Prop :=
   ∀ {x}, x ∈ A → x ∈ B
 
-def complement(A: Set α) : Set α :=
+def complement (A: Set α): Set α :=
   fun x => ¬ (x ∈ A)
 
-def difference(A B: Set α ): Set α :=
+def difference(A B: Set α): Set α :=
   fun x => x ∈ A ∧ (¬ x ∈ B)
+
+def cross(A : Set α)(B: Set β): Set (α × β):=
+  fun p: α × β  => p.fst ∈ A ∧ p.snd ∈ B
 
 infix:70 " ∩ " => inter
 infixl:65 " ∪ " => union
@@ -31,6 +34,7 @@ infix:50 " ⊆ " => subset
 postfix:100 "ᶜ " => complement
 infix:75 " \\ " => difference
 infix:80 " - " => difference
+infix:85 " × " => cross
 
 axiom ext (α : Type _) (A B : Set α) : (∀ x, x ∈ A ↔ x ∈ B) → A = B
 
