@@ -57,7 +57,6 @@ theorem not_mul_two_odd (k: Nat) : odd (2 * k + 1):= by
   induction k with
   | zero => rw [Nat.mul_zero, Nat.zero_add]; trivial
   | succ k ih =>
-  have he: 1 + 1 = 2 * 1 := by trivial
   rw [Nat.mul_succ, Nat.succ_add, succ_eq_add_one, Nat.add_assoc, Nat.add_comm 2 _, ← Nat.add_assoc, mod_eq_sub_mod]
   exact ih
   apply le_add_left
