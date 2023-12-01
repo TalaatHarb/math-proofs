@@ -72,7 +72,7 @@ theorem le_total (a b : MyNat) : a ≤ b ∨ b ≤ a := by
         rw [h, succ_eq_add_one, add_comm]
         exact Or.inl (one_add_le_self b)
       | succ d =>
-        rw [succ_eq_add_one, add_comm d 1, <- add_assoc, <- succ_eq_add_one] at h
+        rw [succ_eq_add_one, add_comm d 1, ←  add_assoc, ←  succ_eq_add_one] at h
         apply Or.inr
         exists d
 

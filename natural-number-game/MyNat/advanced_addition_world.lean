@@ -49,7 +49,7 @@ theorem add_right_cancel_iff (a b t: MyNat ): a + t = b + t ↔ a = b := by
 
 lemma eq_zero_of_add_right_eq_self (a b : MyNat) :
   a + b = a → b = 0 := by
-  rw [<- add_zero a]
+  rw [←  add_zero a]
   apply add_left_cancel
 
 theorem succ_ne_zero (a : MyNat) : succ a ≠ 0 := by
@@ -77,7 +77,7 @@ lemma add_one_eq_succ (d : MyNat) : d + 1 = succ d := by
   apply succ_eq_add_one
 
 lemma ne_succ_self (n : MyNat) : n ≠ succ n := by
-  rw [succ_eq_add_one, <-add_zero n, add_assoc, zero_add]
+  rw [succ_eq_add_one, ← add_zero n, add_assoc, zero_add]
   intro h
   let h' := add_left_cancel _ _ _ h
   rw [one_eq_succ_zero] at h'

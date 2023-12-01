@@ -36,6 +36,6 @@ lemma succ_eq_add_one (a: MyNat) : succ (a) = a + 1 :=
   | succ a' ih => rw [succ_add, ih]
 
 lemma add_right_comm (a b c: MyNat) : a + b + c = a + c + b :=
-  by rw [add_assoc, add_comm b c, <- add_assoc]
+  by rw [add_assoc, add_comm b c, ←  add_assoc]
 
 lemma zero_equal_numeral : zero = 0 := rfl

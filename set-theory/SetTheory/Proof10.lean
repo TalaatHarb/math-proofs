@@ -17,5 +17,5 @@ theorem diff_complement_reverse_diff (A B : Set α ) : Aᶜ \ Bᶜ = B \ A:= by
     constructor
     . exact hba.right
     . have hb:= hba.left
-      rw [<-complement_complement_set B] at hb
+      rw [← complement_complement_set B] at hb
       exact hb

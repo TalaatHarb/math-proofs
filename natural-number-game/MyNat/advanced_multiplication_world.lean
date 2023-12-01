@@ -42,8 +42,8 @@ theorem mul_eq_zero_iff (a b : MyNat) :
   . intro h
     exact (
       Or.elim h
-      (fun ha => by rw [ha, <-zero_equal_numeral ,zero_mul])
-      (fun hb => by rw [hb, <-zero_equal_numeral, mul_zero])
+      (fun ha => by rw [ha, ← zero_equal_numeral ,zero_mul])
+      (fun hb => by rw [hb, ← zero_equal_numeral, mul_zero])
     )
 
 theorem mul_left_cancel (a b c : MyNat)

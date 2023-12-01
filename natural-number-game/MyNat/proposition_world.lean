@@ -36,5 +36,5 @@ example (A B E F G I J L : Prop)
   intro a
   exact f15 ( f11 (f9 (f8 (f5 (f2 (f1 (a)))))))
 
-lemma not_iff_imp_false (P : Prop) : ¬ P <-> (P → False) := by
+lemma not_iff_imp_false (P : Prop) : ¬ P ← > (P → False) := by
   exact Iff.rfl

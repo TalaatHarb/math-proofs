@@ -8,7 +8,7 @@ lemma rfl_example (x y z : MyNat) : x*y+z = x*y+z := rfl
 
 lemma rewrite_example (x y: MyNat) (h: y =x+7) : 2 * y = 2 * (x + 7) :=
   by
-  rw [<- h]
+  rw [←  h]
 
 lemma rewrite_example_2 (a b: MyNat) (h: succ (a) = b) : succ (succ (a)) = succ (b) :=
   by

@@ -15,7 +15,7 @@ apply coll1
 theorem coll_odd' (n : Nat) : collatz (3 * n + 2) → collatz (2 * n + 1) := by
   intro h
   apply coll_odd
-  have he: 6*n+4 = 2 *(3*n+2) := by simp [Nat.mul_add, <-Nat.mul_assoc]
+  have he: 6*n+4 = 2 *(3*n+2) := by simp [Nat.mul_add, ← Nat.mul_assoc]
   rw [he]
   apply coll_even
   assumption

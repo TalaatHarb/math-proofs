@@ -26,7 +26,7 @@ lemma mul_add(t a b: MyNat) : t * (a + b) = t * a + t * b :=
   by induction b with
   | zero => rfl
   | succ b' ih => rw [add_succ, mul_succ, mul_succ,
-   ih, <- add_assoc, <- add_assoc, add_comm t]
+   ih, ←  add_assoc, ←  add_assoc, add_comm t]
 
 lemma mul_assoc (a b c: MyNat) : (a * b) * c = a * (b * c):=
   by induction c with
@@ -38,12 +38,12 @@ lemma succ_mul (a b: MyNat): succ (a) * b = a * b + b :=
   | zero => rfl
   | succ b' ih =>
     rw [mul_succ, mul_succ, ih, succ_eq_add_one, succ_eq_add_one,
-   <- add_assoc, <- add_assoc, add_right_comm a, add_right_comm]
+   ←  add_assoc, ←  add_assoc, add_right_comm a, add_right_comm]
 
 lemma add_mul(t a b: MyNat) : (a + b) * t = a * t + b * t :=
   by induction b with
   | zero => rw [add_zero, zero_mul, add_zero]
-  | succ b' ih => rw [add_succ, succ_mul, succ_mul, <- add_assoc, ih]
+  | succ b' ih => rw [add_succ, succ_mul, succ_mul, ←  add_assoc, ih]
 
 lemma mul_comm (a b: MyNat): a * b = b * a :=
   by induction b with
