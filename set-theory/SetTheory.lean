@@ -28,6 +28,9 @@ def difference(A B: Set α): Set α :=
 def cross(A : Set α)(B: Set β): Set (α × β):=
   fun p: α × β  => p.fst ∈ A ∧ p.snd ∈ B
 
+def powerSet {α : Type} (s : Set α) : Set (Set α) :=
+  fun x => (subset x s )
+
 infix:70 " ∩ " => inter
 infixl:65 " ∪ " => union
 infix:50 " ⊆ " => subset
