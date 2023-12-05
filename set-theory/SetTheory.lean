@@ -38,6 +38,7 @@ postfix:100 "ᶜ " => complement
 infix:75 " - " => difference
 infix:80 " \\ " => difference
 infix:30 (priority := high) " × " => cross
+notation "𝒫 " => powerSet
 
 axiom ext (α : Type _) (A B : Set α) : (∀ x, x ∈ A ↔ x ∈ B) → A = B
 
