@@ -1,6 +1,6 @@
-def divides (m n : Nat) : Prop := n % m = 0
+def divides (n m : Nat) : Prop := m % n = 0
 
-infix:50 (priority := high) " | "  divides
+infix:50 (priority := high) " | " => divides
 
 def even (n : Nat) : Prop := 2 | n
 def odd (n: Nat) : Prop := ¬ (2 | n)
