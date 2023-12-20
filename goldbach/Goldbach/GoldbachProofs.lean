@@ -745,31 +745,249 @@ theorem succ_succ_div_2 (n d: Nat): n/2 > d → (succ (succ n))/2 > succ d:= by
     have hc2:= Nat.le_add_left 2 n
     contradiction
 
-theorem div_lt {a b n: Nat}(hn0: n ≠ 0)(ha: n < a)(hb: n < b): a < b → (a/n) < (b/n):= by
+theorem div_one {a : Nat} : a / 1 = a:= by
+  induction a with
+  | zero => {
+    rw [Nat.div_eq]
+    split
+    . next h =>
+      contradiction
+    . next h =>
+      have hn := not_and h
+      cases hn with
+      | inl _ => contradiction
+      | inr _ => rfl
+  }
+  | succ d hd =>
+  rw [Nat.div_eq]
+  split
+  . next h =>
+    rw [succ_eq_add_one, Nat.add_sub_self_right, hd]
+  . next h =>
+    have hn := not_and h
+    cases hn with
+    | inl _ => contradiction
+    | inr hs =>
+    have h1 := Nat.gt_of_not_le hs
+    rw [← Nat.zero_add 1, ← succ_eq_add_one] at h1
+    contradiction
+
+theorem div_le_zero {a n : Nat} : 0 ≤ (a / n) := by
+  rw [Nat.div_eq]
+  split
+  . next h =>
+    rw [← succ_eq_add_one]
+    exact Nat.le_of_lt (Nat.zero_lt_of_ne_zero (Nat.succ_ne_zero ((a - n) / n)))
+  . next h => exact Nat.le_refl 0
+
+theorem div_lt_zero {a n : Nat} (hn0: n ≠ 0) (ha: n ≤ a) : 0 < (a / n) := by
+  rw [Nat.div_eq]
+  split
+  . next h =>
+    rw [← succ_eq_add_one]
+    exact Nat.zero_lt_succ ((a - n) / n)
+  . next h =>
+    have hn:= not_and h
+    cases hn with
+    | inl _ => have hc:= Nat.zero_lt_of_ne_zero hn0; contradiction
+    | inr _ => contradiction
+
+theorem div_le_one {a n : Nat} (hn0: n ≠ 0) (ha: n ≤ a) : 1 ≤ (a / n) := by
+  have han:= div_lt_zero hn0 ha
+  exact Nat.le_of_lt_succ (Nat.succ_lt_succ han)
+
+theorem lt_def {a b: Nat} : a < b → ∃ d, (0 < d) ∧ (b = a + d):= by
   intro h
+  induction a with
+  | zero => {
+    exists b
+    constructor
+    . exact h
+    . rw [Nat.zero_add]
+  }
+  | succ k hk=>
+  have hkb:= hk (Nat.lt_of_succ_lt h)
+  cases hkb with
+  | intro n hn =>
+  have ⟨h1, h2⟩ := hn
+  have hn1: 1 ≤ n := by exact Nat.succ_le_of_lt h1
+  rw [h2, succ_eq_add_one] at h
+  exists (n - 1)
+  constructor
+  . apply Nat.zero_lt_sub_of_lt
+    rw [Nat.add_comm] at h
+    have hf:= Nat.lt_sub_of_add_lt h
+    rw [Nat.add_sub_cancel_left] at hf
+    exact hf
+  . rw [succ_eq_add_one, Nat.add_assoc, Nat.add_sub_of_le hn1]
+    assumption
 
-  have han:= (Nat.div_add_mod a n).symm
-  have hbn:= (Nat.div_add_mod b n).symm
+theorem le_def {a b: Nat} : a ≤ b → ∃ d, b = a + d:= by
+  intro h
+  by_cases hab: a = b
+  . rw [hab]
+    exists 0
+  . have hlt := Nat.lt_of_le_of_ne h hab
+    have hf:= lt_def hlt
+    cases hf with
+    | intro k hk =>
+    exists k
+    exact hk.right
 
-  sorry
-  -- rw [Nat.div_eq]
-  -- split
-  -- . next hna =>
-  --   rw [Nat.div_eq b n]
-  --   split
-  --   . next hnb =>
+theorem lt_def_rfl (a b d: Nat) (hd: d > 0) : b = a + d → a < b := by
+  intro h
+  induction a generalizing d b with
+  | zero => rw [Nat.zero_add] at h; rw [h.symm] at hd; assumption;
+  | succ k hk =>
+  rw [Nat.succ_add] at h
+  rw [h]
+  apply Nat.succ_lt_succ
+  have hf:= hk (k+d) d hd
+  apply hf
+  rfl
 
-  --     sorry
-  --   . next hnb =>
-  --     have hn := not_and hnb
-  --     cases hn with
-  --     | inl hnn0 => have hx:= Nat.zero_lt_of_ne_zero hn0; contradiction
-  --     | inr hnnb => have hx:= Nat.le_of_lt hb; contradiction
-  -- . next hna =>
-  --   have hn := not_and hna
-  --   cases hn with
-  --   | inl hnn0 => have hx:= Nat.zero_lt_of_ne_zero hn0; contradiction
-  --   | inr hnna => have hx:= Nat.le_of_lt ha; contradiction
+theorem le_def_rfl (a b d: Nat) : b = a + d → a ≤ b := by
+  intro h
+  induction a generalizing d b with
+  | zero => exact Nat.zero_le b;
+  | succ k hk =>
+  rw [Nat.succ_add] at h
+  rw [h]
+  apply Nat.succ_le_succ
+  have hf:= hk (k+d) d
+  apply hf
+  rfl
+
+theorem zero_div {n: Nat}(hn0: n ≠ 0) : zero / n = zero := by
+  rw [Nat.div_eq]
+  split
+  . next hn =>
+    have hc := Nat.eq_zero_of_le_zero hn.right
+    contradiction
+  . next hn =>
+    rfl
+
+theorem one_div {n: Nat}: 1 < n → 1 / n = zero:= by
+  intro h
+  rw [Nat.div_eq]
+  split
+  . next hn =>
+    have h1:= Nat.not_le_of_gt h
+    have h2:= hn.right
+    contradiction
+  . rfl
+
+theorem lt_div_zero {d n: Nat}(hn0: n ≠ 0)(hd: d < n): d / n = 0 := by
+  rw [Nat.div_eq]
+  split
+  . next hn => have h1 := Nat.not_le_of_gt hd; have h2:= hn.right; contradiction;
+  . next hn =>
+    have hc := not_and hn
+    cases hc with
+    | inl _ => have h1 := Nat.zero_lt_of_ne_zero hn0; contradiction;
+    | inr _ => rfl
+
+theorem general_div_pattern {k n d: Nat}(hn0: n ≠ 0)(hd: d < n): (k * n + d) / n = k := by
+  induction k with
+  | zero => rw [Nat.zero_mul, Nat.zero_add, lt_div_zero hn0 hd]
+  | succ k' ih =>
+  rw [Nat.succ_mul, Nat.add_assoc, Nat.add_comm n, ← Nat.add_assoc, Nat.div_eq]
+  split
+  . next hn =>
+    rw [Nat.add_sub_assoc (Nat.le_refl n), Nat.sub_self, Nat.add_zero (k'*n + d), ih]
+  . next hn =>
+    have hc:= not_and hn
+    cases hc with
+    | inl _ => have h1 := Nat.zero_lt_of_ne_zero hn0; contradiction;
+    | inr _ => have h1 := Nat.le_add_left n (k' * n + d); contradiction;
+
+theorem succ_div (a n: Nat)(hn0: n ≠ 0)(ha: ¬ ∃k, a = k * n - 1): (succ a) / n = a / n + 1 / n := by
+  have hp:= mod_pattern a n hn0
+  cases hp with
+  | intro k hk =>
+  cases hk with
+  | intro d hd =>
+  have ⟨ h1, h2⟩ := hd
+  by_cases hn1: n = 1
+  . rw [hn1, div_one,div_one,div_one]
+  . have hn: 1 < n := by exact Nat.lt_of_le_of_ne (Nat.succ_le_of_lt (Nat.zero_lt_of_ne_zero hn0)) (Ne.symm hn1)
+    by_cases hdn: d + 1 < n
+    . rw [one_div hn, Nat.add_zero, h2, general_div_pattern hn0 h1, succ_eq_add_one, Nat.add_assoc, general_div_pattern hn0]
+      assumption
+    . have hdnn := Nat.ge_of_not_lt hdn
+      have h1d := Nat.succ_le_of_lt h1
+      have hf:= Nat.le_antisymm h1d hdnn
+      rw [succ_eq_add_one] at hf
+      have hr :=  (Nat.sub_eq_of_eq_add hf.symm).symm
+      rw [hr, ← Nat.add_sub_assoc (Nat.le_of_lt hn), ← Nat.succ_mul] at h2
+      have hc: ∃ k, a = k * n - 1:= by exists succ k;
+      contradiction
+
+theorem le_succ_div (a n: Nat) (hn0: n ≠ 0): a/n ≤ (succ a)/n:= by
+  by_cases hk: ∃k, a = k * n - 1
+  . cases hk with
+    | intro m hm =>
+    have ha:= mod_pattern a n hn0
+    cases ha with
+    | intro k hk =>
+    cases hk with
+    | intro d hd =>
+    rw [hd.right]
+    rw [general_div_pattern hn0 hd.left, succ_eq_add_one, Nat.add_assoc]
+    by_cases hdk : d + 1 < n
+    . rw [general_div_pattern hn0 hdk]
+      exact Nat.le_refl k
+    . have hdn2:= mod_pattern (d+1) n hn0
+      cases hdn2 with
+      | intro x hx =>
+      cases hx with
+      | intro y hy =>
+      rw [hy.right, ← Nat.add_assoc, ← Nat.add_mul, general_div_pattern hn0]
+      exact Nat.le_add_right k x
+      exact hy.left
+
+  . have hr:= succ_div a n hn0 hk
+    rw [hr]
+    exact Nat.le_add_right (a/n) (1/n)
+
+theorem le_add_div (a k n: Nat) (hn0: n ≠ 0): (a/n) ≤ ((a + k)/n):= by
+  induction k generalizing a with
+  | zero => rw [Nat.add_zero]; exact Nat.le.refl;
+  | succ d hd =>
+  rw [Nat.add_succ, ← Nat.succ_add]
+  have h:= hd (succ a)
+  have hr:= le_succ_div a n hn0
+  exact Nat.le_trans hr h
+
+theorem lt_div (a b n: Nat) (hn0: n ≠ 0) : a < b → (a/n) ≤ (b/n) := by
+  intro h
+  have hb:= lt_def h
+  cases hb with
+  | intro k hk =>
+  rw [hk.right]
+  exact le_add_div a k n hn0
+
+theorem div_lt {a b n: Nat}(hn0: n ≠ 0)(hb: n < b): a + n < b → (a/n) < (b/n):= by
+  intro h
+  have hn:= Nat.zero_lt_of_ne_zero hn0
+  have hab:= lt_def h
+  cases hab with
+  | intro k hk =>
+  have ⟨ _, h2⟩ := hk
+  rw [Nat.div_eq b n]
+  split
+  . next hnn =>
+    rw [Nat.add_assoc, Nat.add_comm n, ← Nat.add_assoc] at h2
+    rw [h2, Nat.add_sub_assoc (Nat.le_refl n), Nat.sub_self, Nat.add_zero (a + k), ← succ_eq_add_one]
+    apply Nat.lt_succ_of_le
+    exact le_add_div a k n hn0
+  . next hnn =>
+    have hc := not_and hnn
+    cases hc with
+    | inl _ => contradiction
+    | inr _ =>
+    have hc:= Nat.le_of_lt hb
+    contradiction
 
 theorem half_gt_3 (n: Nat)(hn: n > 7): n / 2 > 3 := by
   by_cases hn8: succ 7 = n
@@ -779,10 +997,9 @@ theorem half_gt_3 (n: Nat)(hn: n > 7): n / 2 > 3 := by
     have h8: succ 7 = 8 := by trivial
     rw [h8] at hn8 hg8
     have hs: 3 < (8/2) := by trivial
-    have h8_2 : 2 < 8 := by trivial
     have h2z: 2 ≠ 0 := by trivial
-    have hf:= div_lt h2z h8_2 (Nat.lt_trans h8_2 hg8) hg8
-    exact Nat.lt_trans hs hf
+    have hf: 8/2 ≤ n/2 := by exact lt_div 8 n 2 h2z hg8
+    exact Nat.lt_of_lt_of_le hs hf
 
 theorem equivalent_goldbach: ∀ n: Nat, n > 3 → ∃ k: Nat, k < n ∧ prime (n - k) ∧ prime (n + k):= by
   -- this is the important insight behind the Goldbach's conjuctrue, since it corresponds to prime numbers distribution
