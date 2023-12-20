@@ -959,7 +959,7 @@ theorem le_add_div (a k n: Nat) (hn0: n ≠ 0): (a/n) ≤ ((a + k)/n):= by
   have hr:= le_succ_div a n hn0
   exact Nat.le_trans hr h
 
-theorem lt_div (a b n: Nat) (hn0: n ≠ 0) : a < b → (a/n) ≤ (b/n) := by
+theorem lt_div {a b n: Nat} (hn0: n ≠ 0) : a < b → (a/n) ≤ (b/n) := by
   intro h
   have hb:= lt_def h
   cases hb with
@@ -998,7 +998,7 @@ theorem half_gt_3 (n: Nat)(hn: n > 7): n / 2 > 3 := by
     rw [h8] at hn8 hg8
     have hs: 3 < (8/2) := by trivial
     have h2z: 2 ≠ 0 := by trivial
-    have hf: 8/2 ≤ n/2 := by exact lt_div 8 n 2 h2z hg8
+    have hf: 8/2 ≤ n/2 := by exact lt_div h2z hg8
     exact Nat.lt_of_lt_of_le hs hf
 
 theorem equivalent_goldbach: ∀ n: Nat, n > 3 → ∃ k: Nat, k < n ∧ prime (n - k) ∧ prime (n + k):= by
