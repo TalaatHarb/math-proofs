@@ -23,5 +23,5 @@ example (A B E F G I J L : Prop)
 (f11 : J → I) (f15 : I → L) : A → L := by
   sorry
 
-lemma not_iff_imp_false (P : Prop) : ¬ P → (P → False) := by
+lemma not_iff_imp_false (P : Prop) : ¬ P ↔ (P → False) := by
   sorry
